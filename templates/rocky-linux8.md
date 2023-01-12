@@ -6,7 +6,7 @@
 ![](https://img.shields.io/github/forks/ariadata/proxmox-templates-helpers.svg)
 
 
-### ✅ Run these commands as `root` in proxmox shel :
+### ✅ Run these commands as `root` in proxmox shel (change as you need!) :
 ```sh
 cd /var/lib/vz/template/iso
 wget https://dl.rockylinux.org/pub/rocky/8/images/x86_64/Rocky-8-GenericCloud.latest.x86_64.qcow2
@@ -23,6 +23,65 @@ qm set 995 --ide2 local-zfs:cloudinit
 qm set 995 --serial0 socket --vga serial0
 qm set 995 --agent enabled=1
 ```
-
 ---
 
+### ✅ Basic commands after VM initialized :
+#### run these commands as `root` user inside VM :
+```sh
+cp /etc/selinux/config /etc/selinux/config.bk
+sed -i 's/^SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config
+
+cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bk
+sed -i 's/#Port 22/Port 6070/g' /etc/ssh/sshd_config
+setenforce 0
+service sshd restart
+
+hostnamectl set-hostname myhostname
+
+dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+
+systemctl disable --now rpcbind rpcbind.socket
+
+systemctl disable --now firewalld
+
+timedatectl set-timezone Europe/Istanbul
+
+dnf install -y aria2 bind-utils chrony fcgi git htop httpd-tools iotop iperf3 lsof net-tools nmap numactl poppler-utils sysstat traceroute unzip wget yum-utils zip curl nano sqlite p7zip ca-certificates
+
+dnf update -y
+
+reboot
+
+```
+
+### ✅ VLAN 4000 example config, (after VM initialized) :
+#### run these commands as `root` user inside VM :
+
+Assume that the network is eth1, change commands as you need.
+
+```sh
+cp /etc/selinux/config /etc/selinux/config.bk
+sed -i 's/^SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config
+
+cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bk
+sed -i 's/#Port 22/Port 6070/g' /etc/ssh/sshd_config
+setenforce 0
+service sshd restart
+
+hostnamectl set-hostname myhostname
+
+dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+
+systemctl disable --now rpcbind rpcbind.socket
+
+systemctl disable --now firewalld
+
+timedatectl set-timezone Europe/Istanbul
+
+dnf install -y aria2 bind-utils chrony fcgi git htop httpd-tools iotop iperf3 lsof net-tools nmap numactl poppler-utils sysstat traceroute unzip wget yum-utils zip curl nano sqlite p7zip ca-certificates
+
+dnf update -y
+
+reboot
+
+```
