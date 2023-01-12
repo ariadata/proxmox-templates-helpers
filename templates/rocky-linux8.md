@@ -1,10 +1,4 @@
 # Create Template for Rocky-Linux-8
-[![Build Status](https://files.ariadata.co/file/ariadata_logo.png)](https://ariadata.co)
-
-![](https://img.shields.io/github/stars/ariadata/proxmox-templates-helpers.svg)
-![](https://img.shields.io/github/watchers/ariadata/proxmox-templates-helpers.svg)
-![](https://img.shields.io/github/forks/ariadata/proxmox-templates-helpers.svg)
-
 
 ### ✅ Run these commands as `root` in proxmox shel (change as you need!) :
 ```sh
