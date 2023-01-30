@@ -1,6 +1,8 @@
 #under design
 
 
+<img src="" width="48" height="48" />
+
 ## Create a VM as these settintgs via gui :
 # VM ID : 100
 # Name : mikrotik-18.2
