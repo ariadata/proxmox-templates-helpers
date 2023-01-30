@@ -1,37 +1,53 @@
-#under design
+# Deploy Mikrotik on Proxmox
+<img src="https://raw.githubusercontent.com/ariadata/proxmox-templates-helpers/main/static/icons/mikrotik-2.png" alt="Mikrotik on Proxmox" height="48" />
 
+## Step 1 :
+### 1- Create a VM as these settintgs via gui with these settings :
+Note : you can use any name for `ID` and `Name`
 
-<img src="" width="48" height="48" />
+- VM ID : `1002`
+- Name : `mikrotik`
+- In OS Tab : `Do not use any media`
+- Guest OS Type: `Other`
+- In Disks Tab:  `remove all disks`
+- Network Model : `Intel E1000`
 
-## Create a VM as these settintgs via gui :
-# VM ID : 100
-# Name : mikrotik-18.2
-# in OS Tab : Do not use any media
-# Guest OS Type: Other
-# in Disks Tab remove all disks
-# Network Model : Intel E1000
-# after cteated use command :
+## Step 2 : 
+### Goto console of proxmox and run these commands as root :
+```
+apt install -y libguestfs-tools unzip iptables-persistent
+
 cd /var/lib/vz/images/
+
 wget https://mehrdad.ariadata.co/notes/wp-content/uploads/2022/02/mikrotik6-routeros-kvm-disk.zip
-# wget https://files.ariadata.co/file/mikrotik6-routeros-kvm-disk.zip
 
 unzip mikrotik6-routeros-kvm-disk.zip && rm -f mikrotik6-routeros-kvm-disk.zip
-qm importdisk 100 mikrotik-routeros-kvm-disk.qcow2 local
-# Goto hardware tab using gui
-# Double Click on "Unused Disk 0" , Choose Bus/Device : IDE , Add!
-# Goto Options tab using gui : 
-# Enable "Start at boot"
-# In Boot Order : choose only ide0 and drag it to first
-# Goto Console tab and Start the VM
-# Login in console via user admin and empty password
-# Change router password (for numbers enter 0 ):
-user set password=MyPassword
-# interface ethernet reset-mac-address ether2
-ip address add address=192.168.18.2 netmask=255.255.255.0 interface=ether2
-ip route add gateway=192.168.18.1
-# ip dns set servers=1.1.1.1
 
-# Login with WinBox to server : https://mt.lv/winbox
-142.132.195.122:8999
-admin
-MyPassword
+qm importdisk 100 mikrotik-routeros-kvm-disk.qcow2 local-lvm
+```
+
+## Step 3 :
+### Goto gui and do these settings for VM :
+- In hardware tab, double-click on **Unused Disk 0** , Choose `Bus/Device : IDE` , Add!
+- In Options tab, Enable `Start at boot`
+- In Boot Order : choose only `ide0` and drag it to first 
+- Start the VM
+
+## Step 4 :
+### Goto console of VM and use login `admin` and empty password
+Run these commands (when numbers asked, just enter 0 ):
+
+change `password`,`ip`,`netmask` and `gateway` as you want :
+```
+user set password=MyPassword
+interface ethernet reset-mac-address
+ip address add address=192.168.88.2 netmask=255.255.255.0
+ip route add gateway=192.168.88.1
+ip dns set servers=1.1.1.1
+/sys reboot
+```
+
+## Step 5 :
+### Login with WinBox to server : https://mt.lv/winbox
+
+Done!
