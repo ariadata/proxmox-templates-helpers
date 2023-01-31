@@ -1,7 +1,6 @@
 # Create SMB Server with Cockpit
 ### Create an SMB server with cockpit on Proxmox using Debian 11 LXC container.
-<img src="https://raw.githubusercontent.com/ariadata/proxmox-templates-helpers/main/static/icons/LXC.png" alt="Debian LXC" height="48" />
-<img src="https://raw.githubusercontent.com/ariadata/proxmox-templates-helpers/main/static/icons/smb-debian.png" alt="SMB on Debian" height="48" />
+<img src="https://raw.githubusercontent.com/ariadata/proxmox-templates-helpers/main/static/icons/LXC.png" alt="Debian LXC" height="48" /> <img src="https://raw.githubusercontent.com/ariadata/proxmox-templates-helpers/main/static/icons/smb-debian.png" alt="SMB on Debian" height="48" />
 
 Based on [this](https://www.youtube.com/watch?v=Hu3t8pcq8O0) tutorial.
 
