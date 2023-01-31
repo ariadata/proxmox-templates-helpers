@@ -1,4 +1,5 @@
-# Create Template for Rocky-Linux-8
+# Create Template of Rocky-Linux-8
+<img src="https://raw.githubusercontent.com/ariadata/proxmox-templates-helpers/main/static/icons/rocky.png" alt="Rocky Linux on Proxmox" height="48" />
 
 ### ✅ Run these commands as `root` in proxmox shel (change as you need!) :
 ```sh

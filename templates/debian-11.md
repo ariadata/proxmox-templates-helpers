@@ -1,4 +1,5 @@
-# Create Template for Debian 11
+# Create Template of Debian 11
+<img src="https://raw.githubusercontent.com/ariadata/proxmox-templates-helpers/main/static/icons/debian.png" alt="Debian on Proxmox" height="48" />
 
 ### ✅ Run these commands as `root` in proxmox shel (change as you need!) :
 ```sh
@@ -44,6 +45,13 @@ reboot
 Assume that the network is eth1 , [example vlan route file](https://github.com/ariadata/proxmox-templates-helpers/blob/main/static/), change commands as you need.
 
 ```sh
-soon
+nano /etc/network/interfaces.d/50-cloud-init
+### add this lines (edit as you need)
+mtu 1400
+up ip route add 10.0.0.0/16 via 10.0.16.1
+down ip route del 10.0.0.0/16 via 10.0.16.1
+
+## restart network or reboot
+systemctl restart networking
 
 ```

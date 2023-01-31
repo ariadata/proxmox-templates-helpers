@@ -1,4 +1,4 @@
-# Deploy Mikrotik on Proxmox
+# Deploy Mikrotik x86 on Proxmox
 <img src="https://raw.githubusercontent.com/ariadata/proxmox-templates-helpers/main/static/icons/mikrotik-2.png" alt="Mikrotik on Proxmox" height="48" />
 
 ## Step 1 :
