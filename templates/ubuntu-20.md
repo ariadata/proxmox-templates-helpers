@@ -5,7 +5,7 @@
 ```sh
 cd /var/lib/vz/template/iso
 
-wget https://cloud-images.ubuntu.com/focal/current/focal-server-cloudimg-amd64.img
+wget -O ubuntu-20.04-server-cloudimg-amd64.img https://cloud-images.ubuntu.com/focal/current/focal-server-cloudimg-amd64.img
 
 virt-customize -a ubuntu-20.04-server-cloudimg-amd64.img --install qemu-guest-agent,nano,sudo,rsync
 virt-customize -a ubuntu-20.04-server-cloudimg-amd64.img --run-command "sed -i 's/.*PasswordAuthentication.*/PasswordAuthentication yes/g' /etc/ssh/sshd_config"
