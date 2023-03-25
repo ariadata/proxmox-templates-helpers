@@ -8,6 +8,8 @@ cd /var/lib/vz/template/iso
 wget https://cloud.debian.org/cdimage/cloud/bullseye/latest/debian-11-generic-amd64.qcow2
 wget https://github.com/ariadata/proxmox-templates-helpers/raw/main/static/init_command_debian_11.sh init_command_debian_11.sh
 
+apt install -y libguestfs-tools
+
 virt-customize -a debian-11-generic-amd64.qcow2 --install qemu-guest-agent,nano,sudo,rsync
 virt-customize -a debian-11-generic-amd64.qcow2 --run init_command_debian_11.sh
 
