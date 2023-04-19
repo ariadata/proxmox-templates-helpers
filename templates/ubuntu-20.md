@@ -47,13 +47,16 @@ reboot
 Assume that the network is eth1 , [example vlan route file](https://github.com/ariadata/proxmox-templates-helpers/blob/main/static/), change commands as you need.
 
 ```sh
-nano /etc/network/interfaces.d/50-cloud-init
-### add this lines (edit as you need)
-mtu 1400
-up ip route add 10.0.0.0/16 via 10.0.16.1
-down ip route del 10.0.0.0/16 via 10.0.16.1
+nano /etc/netplan/50-cloud-init.yaml
+### add this lines to interface property (modify as you need)
+            addresses:
+            - XX.XX.XX.XX/XX
+            routes:
+            - to: "10.0.0.0/16"
+              via: "10.0.10.1"
+            mtu: 1400
 
-## restart network or reboot
-systemctl restart networking
+# apply netplan
+netplan apply
 
 ```
