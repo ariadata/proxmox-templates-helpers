@@ -52,8 +52,8 @@ nano /etc/netplan/50-cloud-init.yaml
             addresses:
             - XX.XX.XX.XX/XX
             routes:
-            - to: "10.0.0.0/16"
-              via: "10.0.10.1"
+            - to: 10.0.0.0/16
+              via: 10.0.16.1
             mtu: 1400
 
 # apply netplan
