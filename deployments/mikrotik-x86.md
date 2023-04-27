@@ -23,7 +23,7 @@ wget https://mehrdad.ariadata.co/notes/wp-content/uploads/2022/02/mikrotik6-rout
 
 unzip mikrotik6-routeros-kvm-disk.zip && rm -f mikrotik6-routeros-kvm-disk.zip
 
-qm importdisk 100 mikrotik-routeros-kvm-disk.qcow2 local-lvm
+qm importdisk 1002 mikrotik-routeros-kvm-disk.qcow2 local-lvm
 ```
 
 ## Step 3️⃣ :
