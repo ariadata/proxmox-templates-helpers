@@ -21,8 +21,6 @@ qm set 998 --serial0 socket --vga serial0
 qm set 998 --agent enabled=1
 qm template 998
 
-qm template 996
-
 ```
 ---
 
