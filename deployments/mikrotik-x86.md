@@ -44,6 +44,7 @@ interface ethernet reset-mac-address
 ip address add address=192.168.88.2 netmask=255.255.255.0
 ip route add gateway=192.168.88.1
 ip dns set servers=1.1.1.1
+ip service set winbox port=8999
 /sys reboot
 ```
 
