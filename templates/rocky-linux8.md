@@ -5,7 +5,7 @@
 ```sh
 cd /var/lib/vz/template/iso
 wget https://dl.rockylinux.org/pub/rocky/8/images/x86_64/Rocky-8-GenericCloud.latest.x86_64.qcow2
-wget https://github.com/ariadata/proxmox-templates-helpers/raw/main/static/91-RockyLinux8.cfg 91-RockyLinux.cfg
+wget https://github.com/ariadata/proxmox-templates-helpers/raw/main/static/91-RockyLinux8.cfg -O 91-RockyLinux.cfg
 virt-customize -a Rocky-8-GenericCloud.latest.x86_64.qcow2 --install qemu-guest-agent,nano,sudo,rsync
 
 virt-customize -a Rocky-8-GenericCloud.latest.x86_64.qcow2 --copy-in 91-RockyLinux.cfg:/etc/cloud/cloud.cfg.d/
