@@ -9,8 +9,9 @@ Based on [this](https://www.youtube.com/watch?v=Hu3t8pcq8O0) tutorial.
 ## 2️⃣ Run these commands as `root` inside LXC container:
 ```sh
 apt update && apt upgrade -y && apt autoremove -y
-echo "deb http://deb.debian.org/debian bullseye-backports main contrib" | sudo tee -a /etc/apt/sources.list
-apt install -t bullseye-backports systemctl cockpit --no-install-recommends -y
+echo "deb http://deb.debian.org/debian bullseye-backports main contrib" | tee -a /etc/apt/sources.list
+apt install -y systemctl
+apt install -t bullseye-backports cockpit --no-install-recommends -y
 sed -i "s|root|# root\n|g" /etc/cockpit/disallowed-users
 systemctl enable --now cockpit.socket
 ```
