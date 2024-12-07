@@ -1,7 +1,7 @@
 # VLAN Configurations Guide
 
 <details>
-<summary><h2>Debian Configuration</h2></summary>
+<summary><h2>Debian Configuration (NOT Netplan!)</h2></summary>
 
 You can use the following method to configure VLAN dynamically on Debian.
 
