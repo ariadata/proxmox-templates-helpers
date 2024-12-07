@@ -197,7 +197,7 @@ qm set $TEMPLATE_ID --searchdomain "${CI_SEARCHDOMAIN}"
 qm set $TEMPLATE_ID --ipconfig0 "${CI_IPCONFIG}"
 
 # Convert to template
-print_message "Converting to template..."
+#print_message "Converting to template..."
 qm template $TEMPLATE_ID
 
 # Cleanup

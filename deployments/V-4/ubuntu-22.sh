@@ -140,19 +140,32 @@ sed -i "s/Port 22/Port ${SSH_PORT}/" /etc/ssh/sshd_config  # In case it's not co
 
 # Configure SSH authentication
 if [ "${ENABLE_ROOT}" = "y" ]; then
+    # Enable root login more aggressively
     sed -i 's/^#\?PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config
+    echo "PermitRootLogin yes" >> /etc/ssh/sshd_config  # Add it again to be sure
     sed -i 's/^#\?AuthorizedKeysFile.*/AuthorizedKeysFile .ssh\/authorized_keys/' /etc/ssh/sshd_config
+    
+    # Set root password (required for Ubuntu 22.04)
+    echo "root:root" | chpasswd
 fi
 
 if [ "${ENABLE_PASS_AUTH}" = "y" ]; then
+    # Configure password authentication more explicitly
     sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication yes/' /etc/ssh/sshd_config
+    echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config  # Add it again to be sure
     sed -i 's/^#\?ChallengeResponseAuthentication.*/ChallengeResponseAuthentication yes/' /etc/ssh/sshd_config
     sed -i 's/^#\?PermitEmptyPasswords.*/PermitEmptyPasswords no/' /etc/ssh/sshd_config
     sed -i 's/^#\?UsePAM.*/UsePAM yes/' /etc/ssh/sshd_config
+    
+    # Ensure password login works
+    sed -i 's/^#\?KbdInteractiveAuthentication.*/KbdInteractiveAuthentication yes/' /etc/ssh/sshd_config
 fi
 
 # Ensure PubkeyAuthentication is enabled
 sed -i 's/^#\?PubkeyAuthentication.*/PubkeyAuthentication yes/' /etc/ssh/sshd_config
+
+# Disable StrictModes which can prevent root login in some cases
+sed -i 's/^#\?StrictModes.*/StrictModes no/' /etc/ssh/sshd_config
 
 # Install additional packages
 DEBIAN_FRONTEND=noninteractive apt-get update
@@ -207,4 +220,4 @@ rm -f "${UBUNTU_IMAGE_NAME}" init_script.sh
 print_message "Template creation complete! Template ID: ${TEMPLATE_ID}"
 print_message "You can now create VMs from this template using:"
 print_message "qm clone ${TEMPLATE_ID} <new_vm_id> --name <new_vm_name>"
-#print_message "\ndone!\n"
+print_message "\ndone!\n"
