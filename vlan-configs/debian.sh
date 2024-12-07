@@ -8,7 +8,7 @@ if [ -n "$INTERFACE" ]; then
     echo "Found interface: $INTERFACE"
 
     # Write the dynamic VLAN configuration to Cloud-Init
-    cat <<EOF | sudo tee /etc/cloud/cloud.cfg.d/99-custom-config.cfg
+    cat <<EOF | sudo tee /etc/cloud/cloud.cfg.d/99_custom-config.cfg
 #cloud-config
 runcmd:
   - ip link set mtu 1400 dev $INTERFACE
