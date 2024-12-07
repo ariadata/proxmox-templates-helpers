@@ -133,6 +133,7 @@ cat > init_script.sh << EOL
 
 # Configure SSH
 sed -i "s/#Port 22/Port ${SSH_PORT}/" /etc/ssh/sshd_config
+sed -i "s/Port 22/Port ${SSH_PORT}/" /etc/ssh/sshd_config  # In case it's not commented out
 
 # Enable root login if requested
 if [ "${ENABLE_ROOT}" = "y" ]; then
