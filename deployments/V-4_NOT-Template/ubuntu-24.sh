@@ -128,7 +128,7 @@ print_message "Resizing disk image to ${VM_DISK_SIZE}GB..."
 qemu-img resize "${UBUNTU_IMAGE_NAME}" "${VM_DISK_SIZE}G"
 
 # Create initialization script
-cat > init_script.sh << 'EOL'
+cat > init_script.sh << EOL
 #!/bin/bash
 
 # Configure SSH
@@ -190,7 +190,7 @@ qm set $TEMPLATE_ID --ipconfig0 "${CI_IPCONFIG}"
 
 # Cleanup
 print_message "Cleaning up..."
-rm -f "${DEBIAN_IMAGE_NAME}" init_script_debian-11.sh
+rm -f "${UBUNTU_IMAGE_NAME}" init_script.sh
 
 #print_message "Template creation complete! Template ID: ${TEMPLATE_ID}"
 #print_message "You can now create VMs from this template using:"

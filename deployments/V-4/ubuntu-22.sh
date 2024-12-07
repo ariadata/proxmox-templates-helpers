@@ -101,6 +101,17 @@ while true; do
     fi
 done
 
+# Prompt for SSH port
+read -e -p $'Enter \e[33mSSH port\033[0m : ' -i "6070" SSH_PORT
+
+# Prompt for root login configuration
+read -e -p $'Enable \e[33mroot login\033[0m (y/n): ' -i "y" ENABLE_ROOT
+ENABLE_ROOT=$(echo "$ENABLE_ROOT" | tr '[:upper:]' '[:lower:]')
+
+# Prompt for password authentication
+read -e -p $'Enable \e[33mpassword authentication\033[0m (y/n): ' -i "y" ENABLE_PASS_AUTH
+ENABLE_PASS_AUTH=$(echo "$ENABLE_PASS_AUTH" | tr '[:upper:]' '[:lower:]')
+
 # Detect storage
 STORAGE=$(detect_storage)
 print_message "Detected storage: $STORAGE"
@@ -117,7 +128,7 @@ print_message "Resizing disk image to ${VM_DISK_SIZE}GB..."
 qemu-img resize "${UBUNTU_IMAGE_NAME}" "${VM_DISK_SIZE}G"
 
 # Create initialization script
-cat > init_script.sh << 'EOL'
+cat > init_script.sh << EOL
 #!/bin/bash
 
 # Configure SSH
@@ -184,3 +195,4 @@ rm -f "${UBUNTU_IMAGE_NAME}" init_script.sh
 print_message "Template creation complete! Template ID: ${TEMPLATE_ID}"
 print_message "You can now create VMs from this template using:"
 print_message "qm clone ${TEMPLATE_ID} <new_vm_id> --name <new_vm_name>"
+#print_message "\ndone!\n"

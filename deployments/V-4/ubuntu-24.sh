@@ -128,7 +128,7 @@ print_message "Resizing disk image to ${VM_DISK_SIZE}GB..."
 qemu-img resize "${UBUNTU_IMAGE_NAME}" "${VM_DISK_SIZE}G"
 
 # Create initialization script
-cat > init_script.sh << 'EOL'
+cat > init_script.sh << EOL
 #!/bin/bash
 
 # Configure SSH
@@ -195,3 +195,4 @@ rm -f "${UBUNTU_IMAGE_NAME}" init_script.sh
 print_message "Template creation complete! Template ID: ${TEMPLATE_ID}"
 print_message "You can now create VMs from this template using:"
 print_message "qm clone ${TEMPLATE_ID} <new_vm_id> --name <new_vm_name>"
+#print_message "\ndone!\n"
