@@ -18,8 +18,8 @@ bash debian-11.sh
 ```
 
 
-#### [Change VLAN configs](https://github.com/ariadata/proxmox-templates-helpers/blob/main/vlan-configs/README.md)
+#### [Change VLAN configs for VMs](https://github.com/ariadata/proxmox-templates-helpers/blob/main/vlan-configs/README.md)
 
 
 
-#### [Custom Repo Configs](https://github.com/ariadata/dc-nexus/blob/main/client-config.md)
+#### [Custom Repo Configs for VMs](https://github.com/ariadata/dc-nexus/blob/main/client-config.md)
