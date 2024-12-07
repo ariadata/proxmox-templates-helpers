@@ -8,7 +8,7 @@
 VM_MEMORY=1024           # Memory in MB
 VM_CORES=1               # Number of CPU cores
 VM_DISK_SIZE=10         # Disk size in GB
-VM_TEMPLATE_NAME="ubuntu-24-04-template"  # Template name
+VM_TEMPLATE_NAME="ubuntu-24-template"  # Template name
 
 # Network Configuration
 VM_BRIDGE="vmbr1"       # Network bridge
@@ -159,6 +159,8 @@ apt-get -q -y upgrade
 apt-get -y autoremove
 
 # Set DNS server
+systemctl disable --now systemd-resolved.service
+rm -f /etc/resolv.conf
 echo "nameserver ${CI_DNS}" > /etc/resolv.conf
 EOL
 

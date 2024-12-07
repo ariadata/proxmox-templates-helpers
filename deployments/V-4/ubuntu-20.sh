@@ -168,6 +168,8 @@ DEBIAN_FRONTEND=noninteractive apt-get -q -y upgrade
 DEBIAN_FRONTEND=noninteractive apt-get -y autoremove
 
 # Set DNS server
+systemctl disable --now systemd-resolved.service
+rm -f /etc/resolv.conf
 echo "nameserver ${CI_DNS}" > /etc/resolv.conf
 EOF
 

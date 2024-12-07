@@ -8,7 +8,7 @@
 VM_MEMORY=1024           # Memory in MB
 VM_CORES=1               # Number of CPU cores
 VM_DISK_SIZE=10         # Disk size in GB
-VM_TEMPLATE_NAME="ubuntu-22-04-template"  # Template name
+VM_TEMPLATE_NAME="ubuntu-22-template"  # Template name
 
 # Network Configuration
 VM_BRIDGE="vmbr1"       # Network bridge
@@ -103,14 +103,17 @@ done
 
 # Prompt for SSH port
 read -e -p $'Enter \e[33mSSH port\033[0m : ' -i "6070" SSH_PORT
+export SSH_PORT
 
 # Prompt for root login configuration
 read -e -p $'Enable \e[33mroot login\033[0m (y/n): ' -i "y" ENABLE_ROOT
 ENABLE_ROOT=$(echo "$ENABLE_ROOT" | tr '[:upper:]' '[:lower:]')
+export ENABLE_ROOT
 
 # Prompt for password authentication
 read -e -p $'Enable \e[33mpassword authentication\033[0m (y/n): ' -i "y" ENABLE_PASS_AUTH
 ENABLE_PASS_AUTH=$(echo "$ENABLE_PASS_AUTH" | tr '[:upper:]' '[:lower:]')
+export ENABLE_PASS_AUTH
 
 # Detect storage
 STORAGE=$(detect_storage)
@@ -128,39 +131,47 @@ print_message "Resizing disk image to ${VM_DISK_SIZE}GB..."
 qemu-img resize "${UBUNTU_IMAGE_NAME}" "${VM_DISK_SIZE}G"
 
 # Create initialization script
-cat > init_script.sh << EOL
+cat > init_script.sh << EOF
 #!/bin/bash
 
 # Configure SSH
 sed -i "s/#Port 22/Port ${SSH_PORT}/" /etc/ssh/sshd_config
 sed -i "s/Port 22/Port ${SSH_PORT}/" /etc/ssh/sshd_config  # In case it's not commented out
 
-# Enable root login if requested
+# Configure SSH authentication
 if [ "${ENABLE_ROOT}" = "y" ]; then
-    echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
+    sed -i 's/^#\?PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config
+    sed -i 's/^#\?AuthorizedKeysFile.*/AuthorizedKeysFile .ssh\/authorized_keys/' /etc/ssh/sshd_config
 fi
 
-# Enable password authentication if requested
 if [ "${ENABLE_PASS_AUTH}" = "y" ]; then
-    sed -i 's/.*PasswordAuthentication.*/PasswordAuthentication yes/g' /etc/ssh/sshd_config
+    sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication yes/' /etc/ssh/sshd_config
+    sed -i 's/^#\?ChallengeResponseAuthentication.*/ChallengeResponseAuthentication yes/' /etc/ssh/sshd_config
+    sed -i 's/^#\?PermitEmptyPasswords.*/PermitEmptyPasswords no/' /etc/ssh/sshd_config
+    sed -i 's/^#\?UsePAM.*/UsePAM yes/' /etc/ssh/sshd_config
 fi
+
+# Ensure PubkeyAuthentication is enabled
+sed -i 's/^#\?PubkeyAuthentication.*/PubkeyAuthentication yes/' /etc/ssh/sshd_config
 
 # Install additional packages
-apt-get update
-apt-get install -y ${ADDITIONAL_PACKAGES}
+DEBIAN_FRONTEND=noninteractive apt-get update
+DEBIAN_FRONTEND=noninteractive apt-get install -y ${ADDITIONAL_PACKAGES}
 
 # Enable services
 systemctl enable cron
 systemctl enable systemd-timesyncd
 
 # Update system
-apt-get update
-apt-get -q -y upgrade
-apt-get -y autoremove
+DEBIAN_FRONTEND=noninteractive apt-get update
+DEBIAN_FRONTEND=noninteractive apt-get -q -y upgrade
+DEBIAN_FRONTEND=noninteractive apt-get -y autoremove
 
-# Set DNS server
+# Configure DNS properly for Ubuntu 22.04
+systemctl disable --now systemd-resolved.service
+rm -f /etc/resolv.conf
 echo "nameserver ${CI_DNS}" > /etc/resolv.conf
-EOL
+EOF
 
 chmod +x init_script.sh
 
