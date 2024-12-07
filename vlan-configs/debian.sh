@@ -26,3 +26,5 @@ else
     echo "No interface found with an IP in the 10.0.x.x range. Exiting."
     exit 1
 fi
+
+sudo systemctl restart networking
