@@ -180,10 +180,10 @@ DEBIAN_FRONTEND=noninteractive apt-get update
 DEBIAN_FRONTEND=noninteractive apt-get -q -y upgrade
 DEBIAN_FRONTEND=noninteractive apt-get -y autoremove
 
-# Configure DNS properly for Ubuntu 24.04
-systemctl disable --now systemd-resolved.service
+# Note : Fix DNS Server :
+systemctl disable --now systemd-resolved
 rm -f /etc/resolv.conf
-echo "nameserver ${CI_DNS}" > /etc/resolv.conf
+echo -e "nameserver 8.8.8.8\nnameserver 1.1.1.1\nnameserver 4.2.2.4\nnameserver 9.9.9.9" | tee /etc/resolv.conf
 EOF
 
 chmod +x init_script.sh

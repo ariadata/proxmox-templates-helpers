@@ -157,8 +157,11 @@ apt-get update
 apt-get -q -y upgrade
 apt-get -y autoremove
 
-# Set DNS server
-echo "nameserver ${CI_DNS}" > /etc/resolv.conf
+# Note : Fix DNS Server :
+systemctl disable --now systemd-resolved
+rm -f /etc/resolv.conf
+echo -e "nameserver 8.8.8.8\nnameserver 1.1.1.1\nnameserver 4.2.2.4\nnameserver 9.9.9.9" | tee /etc/resolv.conf
+
 EOL
 
 chmod +x init_script.sh

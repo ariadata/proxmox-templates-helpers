@@ -144,6 +144,10 @@ if [ "${ENABLE_PASS_AUTH}" = "y" ]; then
     sed -i 's/.*PasswordAuthentication.*/PasswordAuthentication yes/g' /etc/ssh/sshd_config
 fi
 
+sed -i 's/^source-directory \/run.*/##\0/g' /etc/network/interfaces
+sed -i 's|inet dhcp|inet manual|g' /etc/network/cloud-interfaces-template
+sed -i 's/^do_setup$/##\0/g' /etc/network/cloud-ifupdown-helper
+
 # Install additional packages
 apt-get update
 apt-get install -y ${ADDITIONAL_PACKAGES}
@@ -157,8 +161,11 @@ apt-get update
 apt-get -q -y upgrade
 apt-get -y autoremove
 
-# Set DNS server
-echo "nameserver ${CI_DNS}" > /etc/resolv.conf
+# Note : Fix DNS Server :
+systemctl disable --now systemd-resolved
+rm -f /etc/resolv.conf
+echo -e "nameserver 8.8.8.8\nnameserver 1.1.1.1\nnameserver 4.2.2.4\nnameserver 9.9.9.9" | tee /etc/resolv.conf
+
 EOL
 
 chmod +x init_script_debian-11.sh
